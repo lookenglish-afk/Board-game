@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safari English Adventure - Game Rắn Leo Thang Tiếng Anh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    :root {
+      --bg-color: #f0fdf4;
+      --card-bg: #ffffff;
+      --accent-orange: #ff7849;
+      --accent-green: #10b981;
+      --accent-purple: #8b5cf6;
+      --accent-red: #ef4444;
+      --accent-yellow: #f59e0b;
+      --accent-blue: #3b82f6;
+      --dark-text: #1e293b;
+      --grid-border: #cbd5e1;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      background: linear-gradient(135deg, #ecfdf5 0%, #e0f2fe 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--dark-text);
+      overflow-x: hidden;
+      padding: 16px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      color: #065f46;
+      text-shadow: 2px 2px 0px #a7f3d0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .game-container {
+      display: flex;
+      flex-direction: row;
+      gap: 24px;
+      max-width: 1200px;
+      width: 100%;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    /* Board Styles */
+    .board-wrapper {
+      background: white;
+      padding: 16px;
+      border-radius: 24px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.08), 0 0 0 8px #34d399;
+      position: relative;
+    }
+
+    .board-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 75px);
+      grid-template-rows: repeat(6, 75px);
+      gap: 6px;
+      background: #f8fafc;
+      padding: 8px;
+      border-radius: 16px;
+      position: relative;
+    }
+
+    .cell {
+      position: relative;
+      background: #ffffff;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px;
+      transition: all 0.2s ease;
+      font-weight: 700;
+    }
+
+    .cell .num {
+      position: absolute;
+      top: 4px;
+      left: 6px;
+      font-size: 13px;
+      color: #64748b;
+    }
+
+    .cell .icon {
+      font-size: 26px;
+      margin-top: 14px;
+    }
+
+    .cell .label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    /* Cell Types */
+    .cell.normal { background: #f8fafc; }
+    .cell.lion { background: #ffedd5; border-color: #fb923c; color: #c2410c; }
+    .cell.quiz { background: #ede9fe; border-color: #a78bfa; color: #6d28d9; }
+    .cell.ladder { background: #dcfce7; border-color: #4ade80; color: #15803d; }
+    .cell.snake { background: #fee2e2; border-color: #f87171; color: #b91c1c; }
+    .cell.double { background: #fef3c7; border-color: #facc15; color: #b45309; }
+    .cell.start { background: #e0e7ff; border-color: #818cf8; color: #4338ca; }
+    .cell.finish { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; border-color: #d97706; }
+
+    /* Player Token */
+    .player-token {
+      width: 44px;
+      height: 44px;
+      background: #ec4899;
+      border: 3px solid #ffffff;
+      box-shadow: 0 4px 10px rgba(236,72,153,0.5);
+      border-radius: 50%;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      z-index: 10;
+      transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+
+    /* Controls & Dashboard */
+    .controls-panel {
+      flex: 1;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .stats-card {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-around;
+      text-align: center;
+    }
+
+    .stat-box h4 {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .stat-box p {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    /* 3D Dice Box */
+    .dice-container {
+      background: white;
+      padding: 24px;
+      border-radius: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .dice-scene {
+      width: 80px;
+      height: 80px;
+      perspective: 600px;
+    }
+
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: translateZ(-40px);
+      transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: 16px;
+      display: flex;
+      flex-wrap: wrap;
+      padding: 12px;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.08);
+      justify-content: space-between;
+      align-content: space-between;
+    }
+
+    .pip {
+      width: 14px;
+      height: 14px;
+      background: #ef4444;
+      border-radius: 50%;
+      display: block;
+    }
+
+    .face-1 { transform: rotateY(0deg) translateZ(40px); justify-content: center; align-content: center; }
+    .face-2 { transform: rotateY(90deg) translateZ(40px); }
+    .face-3 { transform: rotateY(180deg) translateZ(40px); }
+    .face-4 { transform: rotateY(-90deg) translateZ(40px); }
+    .face-5 { transform: rotateX(90deg) translateZ(40px); }
+    .face-6 { transform: rotateX(-90deg) translateZ(40px); }
+
+    .btn-roll {
+      background: linear-gradient(135deg, #10b981, #059669);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.35);
+      transition: transform 0.1s, box-shadow 0.1s;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-roll:active {
+      transform: scale(0.96);
+    }
+
+    .btn-roll:disabled {
+      background: #94a3b8;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    /* Event Logs */
+    .log-box {
+      background: white;
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      font-size: 14px;
+      max-height: 150px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .log-entry {
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #f1f5f9;
+      font-weight: 600;
+      border-left: 4px solid #64748b;
+    }
+
+    /* Modal / Popups */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-card {
+      background: white;
+      padding: 32px;
+      border-radius: 28px;
+      width: 90%;
+      max-width: 440px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+      transform: scale(0.9);
+      animation: popUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes popUp {
+      to { transform: scale(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-card h2 {
+      font-size: 26px;
+      margin-bottom: 12px;
+    }
+
+    .modal-avatar {
+      font-size: 80px;
+      margin: 10px 0;
+      display: inline-block;
+      animation: bounce 0.6s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-12px); }
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .btn-opt {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+    }
+
+    .btn-opt:hover {
+      background: #ede9fe;
+      border-color: #8b5cf6;
+      color: #6d28d9;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    /* Screen shake for traps */
+    .shake {
+      animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+    }
+
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🦁 Safari Snakes & Ladders: English Quest!</h1>
+    <p>Lắc xúc xắc, vượt cạm bẫy, trả lời câu hỏi và chinh phục đích đến ô 36!</p>
+  </header>
+
+  <div class="game-container">
+    <!-- Board -->
+    <div class="board-wrapper" id="boardWrapper">
+      <div class="board-grid" id="boardGrid">
+        <!-- Cells generated via JS -->
+      </div>
+      <div class="player-token" id="playerToken">
+        <i class="fa-solid fa-child-reaching"></i>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="controls-panel">
+      <div class="stats-card">
+        <div class="stat-box">
+          <h4>VỊ TRÍ</h4>
+          <p id="posDisplay">1</p>
+        </div>
+        <div class="stat-box">
+          <h4>ĐIỂM SỐ</h4>
+          <p id="scoreDisplay" style="color: #f59e0b;">0</p>
+        </div>
+        <div class="stat-box">
+          <h4>LƯỢT ĐI</h4>
+          <p id="turnDisplay" style="color: #10b981;">1</p>
+        </div>
+      </div>
+
+      <div class="dice-container">
+        <div class="dice-scene">
+          <div class="cube" id="cube">
+            <div class="cube-face face-1"><span class="pip"></span></div>
+            <div class="cube-face face-2"><span class="pip"></span><span class="pip"></span></div>
+            <div class="cube-face face-3"><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+            <div class="cube-face face-4"><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+            <div class="cube-face face-5"><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+            <div class="cube-face face-6"><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span><span class="pip"></span></div>
+          </div>
+        </div>
+
+        <button class="btn-roll" id="rollBtn" onclick="rollDice()">
+          <i class="fa-solid fa-dice"></i> LẮC XÚC XẮC
+        </button>
+      </div>
+
+      <div class="log-box" id="logBox">
+        <div class="log-entry">Chào mừng bạn! Nhấn Lắc Xúc Xắc để bắt đầu hành trình.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Modal / Popup Dialog -->
+  <div class="modal-overlay" id="eventModal">
+    <div class="modal-card" id="modalCard">
+      <div class="modal-avatar" id="modalAvatar">🦁</div>
+      <h2 id="modalTitle">Cạm bẫy!</h2>
+      <p id="modalDesc">Bạn gặp một con sư tử dữ tợn!</p>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script>
+    // Audio Synthesizer (Không cần nạp file mp3 ngoài, chạy mượt tức thì)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 440, type = 'sine', duration = 0.15) {
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    }
+
+    function playRoarSound() {
+      // Giả lập tiếng gầm sư tử bằng low noise modulation
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      for(let i = 0; i < 5; i++) {
+        setTimeout(() => playBeep(90 + Math.random() * 40, 'sawtooth', 0.25), i * 60);
+      }
+    }
+
+    // Board Configuration (36 cells, 6x6 Boustrophedon / Zíc zắc)
+    const BOARD_SIZE = 36;
+    let playerPosition = 1;
+    let score = 0;
+    let turns = 1;
+    let isRolling = false;
+
+    // Định nghĩa các ô đặc biệt & cạm bẫy
+    const SPECIAL_CELLS = {
+      6: { type: 'ladder', target: 14, label: 'Thang +8', icon: '🪜', desc: 'Leo thang gỗ thần kì lên ô 14!' },
+      9: { type: 'lion', label: 'Sư tử', icon: '🦁', desc: 'Sư tử gầm vang! Bạn sợ hãi chạy lùi 3 bước!', penalty: -3 },
+      12: { type: 'double', label: 'x2 Điểm', icon: '⭐', desc: 'Kho báu may mắn! Nhân đôi điểm số hiện có!', mult: 2 },
+      16: { type: 'quiz', label: 'Câu hỏi', icon: '❓', desc: 'Thử thách ngữ pháp tiếng Anh!' },
+      19: { type: 'snake', target: 7, label: 'Rắn cắn', icon: '🐍', desc: 'Bị trượt đuôi rắn rơi tụt xuống ô 7!' },
+      22: { type: 'quiz', label: 'Câu hỏi', icon: '❓', desc: 'Thử thách dịch nghĩa từ vựng!' },
+      25: { type: 'ladder', target: 32, label: 'Thang +7', icon: '🪜', desc: 'Cầu vồng rực rỡ đưa bạn vút lên ô 32!' },
+      28: { type: 'lion', label: 'Sư tử', icon: '🦁', desc: 'Bạn chạm trán chúa sơn lâm! Lùi lại 4 bước!', penalty: -4 },
+      31: { type: 'snake', target: 18, label: 'Rắn lớn', icon: '🐍', desc: 'Con trăn khổng lồ cuốn bạn tụt về ô 18!' },
+      34: { type: 'quiz', label: 'Câu hỏi', icon: '❓', desc: 'Cửa ải thử thách cuối trước vạch đích!' },
+      36: { type: 'finish', label: 'ĐÍCH', icon: '🏆', desc: 'Chiến thắng vinh quang!' }
+    };
+
+    // Ngân hàng câu hỏi tiếng Anh vui nhộn
+    const ENGLISH_QUESTIONS = [
+      {
+        q: "What is the opposite of 'FAST'?",
+        options: ["Quick", "Slow", "Hard", "Smart"],
+        correct: 1
+      },
+      {
+        q: "Choose the correct sentence:",
+        options: ["She play piano.", "She plays piano.", "She playing piano.", "She are play."],
+        correct: 1
+      },
+      {
+        q: "'Elephant' có nghĩa là con gì?",
+        options: ["Con hươu", "Con sư tử", "Con voi", "Con gấu"],
+        correct: 2
+      },
+      {
+        q: "Which word is a COLOR?",
+        options: ["Apple", "Yellow", "Banana", "Tiger"],
+        correct: 1
+      },
+      {
+        q: "I have two ______ (bàn chân).",
+        options: ["foots", "feets", "foot", "feet"],
+        correct: 3
+      }
+    ];
+
+    // Tạo bảng cờ theo chuẩn zíc zắc từ dưới lên
+    function generateBoard() {
+      const grid = document.getElementById('boardGrid');
+      grid.innerHTML = '';
+
+      // Tọa độ 6 hàng, mỗi hàng 6 ô (Hàng 6 ở dưới cùng đi từ 1->6, hàng 5 từ 12<-7,...)
+      let cellNumbers = [];
+      for (let row = 5; row >= 0; row--) {
+        let rowCells = [];
+        for (let col = 0; col < 6; col++) {
+          let num;
+          if ((5 - row) % 2 === 0) {
+            num = (5 - row) * 6 + col + 1;
+          } else {
+            num = (5 - row) * 6 + (6 - col);
+          }
+          rowCells.push(num);
+        }
+        cellNumbers.push(rowCells);
+      }
+
+      cellNumbers.forEach(row => {
+        row.forEach(num => {
+          const cell = document.createElement('div');
+          cell.className = 'cell';
+          cell.id = `cell-${num}`;
+
+          const special = SPECIAL_CELLS[num];
+          if (num === 1) {
+            cell.classList.add('start');
+            cell.innerHTML = `<span class="num">1</span><span class="icon">⛺</span><span class="label">START</span>`;
+          } else if (special) {
+            cell.classList.add(special.type);
+            cell.innerHTML = `<span class="num">${num}</span><span class="icon">${special.icon}</span><span class="label">${special.label}</span>`;
+          } else {
+            cell.classList.add('normal');
+            cell.innerHTML = `<span class="num">${num}</span><span class="icon">🌱</span><span class="label">Safe</span>`;
+          }
+          grid.appendChild(cell);
+        });
+      });
+      updateTokenPosition(1, false);
+    }
+
+    // Cập nhật vị trí con cờ theo pixel thực tế của ô
+    function updateTokenPosition(pos, animate = true) {
+      const cell = document.getElementById(`cell-${pos}`);
+      const token = document.getElementById('playerToken');
+      const rect = cell.getBoundingClientRect();
+      const boardRect = document.getElementById('boardWrapper').getBoundingClientRect();
+
+      const left = rect.left - boardRect.left + (rect.width - 44) / 2;
+      const top = rect.top - boardRect.top + (rect.height - 44) / 2;
+
+      token.style.left = `${left}px`;
+      token.style.top = `${top}px`;
+      document.getElementById('posDisplay').innerText = pos;
+    }
+
+    // Log hệ thống
+    function addLog(msg) {
+      const logBox = document.getElementById('logBox');
+      const entry = document.createElement('div');
+      entry.className = 'log-entry';
+      entry.innerText = msg;
+      logBox.prepend(entry);
+    }
+
+    // Xoay xúc xắc 3D
+    function rollDice() {
+      if (isRolling) return;
+      isRolling = true;
+      document.getElementById('rollBtn').disabled = true;
+
+      const cube = document.getElementById('cube');
+      const rollValue = Math.floor(Math.random() * 6) + 1;
+
+      // Hiệu ứng âm thanh khi lắc
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => playBeep(300 + Math.random() * 200, 'triangle', 0.08), i * 80);
+      }
+
+      // Xoay nhiều vòng random + định vị mặt rơi trúng
+      const rotFactors = [
+        { x: 0, y: 0 },       // 1
+        { x: 0, y: -90 },     // 2
+        { x: 0, y: -180 },    // 3
+        { x: 0, y: 90 },      // 4
+        { x: -90, y: 0 },     // 5
+        { x: 90, y: 0 }       // 6
+      ];
+
+      const chosen = rotFactors[rollValue - 1];
+      const multiSpin = 720; // 2 vòng xoay
+      cube.style.transform = `translateZ(-40px) rotateX(${chosen.x + multiSpin}deg) rotateY(${chosen.y + multiSpin}deg)`;
+
+      setTimeout(() => {
+        addLog(`🎲 Bạn lắc được ${rollValue} điểm!`);
+        movePlayerStepByStep(rollValue);
+      }, 1100);
+    }
+
+    // Di chuyển con cờ từng bước một
+    async function movePlayerStepByStep(steps) {
+      let target = playerPosition + steps;
+      if (target > BOARD_SIZE) target = BOARD_SIZE;
+
+      while (playerPosition < target) {
+        playerPosition++;
+        updateTokenPosition(playerPosition);
+        playBeep(520, 'sine', 0.1);
+        await new Promise(r => setTimeout(r, 260));
+      }
+
+      score += steps * 5;
+      document.getElementById('scoreDisplay').innerText = score;
+      handleCellLanding(playerPosition);
+    }
+
+    // Xử lý cạm bẫy hoặc sự kiện ô
+    function handleCellLanding(pos) {
+      const cellInfo = SPECIAL_CELLS[pos];
+
+      if (!cellInfo) {
+        finishTurn();
+        return;
+      }
+
+      if (cellInfo.type === 'lion') {
+        // Cạm bẫy sư tử
+        playRoarSound();
+        triggerModal('🦁 CẠM BẪY SƯ TỬ!', cellInfo.desc, '🦁', () => {
+          document.getElementById('boardWrapper').classList.add('shake');
+          setTimeout(() => document.getElementById('boardWrapper').classList.remove('shake'), 400);
+          playerPosition = Math.max(1, playerPosition + cellInfo.penalty);
+          updateTokenPosition(playerPosition);
+          addLog(`😱 Sư tử gầm! Rút lui về ô ${playerPosition}!`);
+          finishTurn();
+        });
+      } else if (cellInfo.type === 'ladder') {
+        playBeep(650, 'sine', 0.3);
+        triggerModal('🪜 THANG MAY MẮN!', cellInfo.desc, '🪜', () => {
+          playerPosition = cellInfo.target;
+          updateTokenPosition(playerPosition);
+          score += 20;
+          document.getElementById('scoreDisplay').innerText = score;
+          addLog(`🚀 Bay thẳng lên ô ${playerPosition}!`);
+          finishTurn();
+        });
+      } else if (cellInfo.type === 'snake') {
+        playBeep(180, 'sawtooth', 0.4);
+        triggerModal('🐍 RẮN KHỔNG LỒ!', cellInfo.desc, '🐍', () => {
+          playerPosition = cellInfo.target;
+          updateTokenPosition(playerPosition);
+          addLog(`😢 Rơi tụt xuống ô ${playerPosition}!`);
+          finishTurn();
+        });
+      } else if (cellInfo.type === 'double') {
+        playBeep(880, 'sine', 0.3);
+        score *= 2;
+        document.getElementById('scoreDisplay').innerText = score;
+        triggerModal('⭐ NHÂN ĐÔI ĐIỂM SỐ!', 'Thật tuyệt vời! Điểm của bạn đã được x2!', '✨', () => {
+          addLog(`🎉 Điểm số tăng vọt thành ${score}!`);
+          finishTurn();
+        });
+      } else if (cellInfo.type === 'quiz') {
+        // Thử thách câu hỏi tiếng Anh
+        showEnglishQuiz();
+      } else if (cellInfo.type === 'finish') {
+        playBeep(784, 'triangle', 0.5);
+        triggerModal('🏆 CHÚC MỪNG CHIẾN THẮNG!', `Bạn đã hoàn thành thử thách với tổng điểm: ${score}!`, '🎉', () => {
+          resetGame();
+        });
+      }
+    }
+
+    // Hiển thị câu hỏi tiếng Anh
+    function showEnglishQuiz() {
+      const q = ENGLISH_QUESTIONS[Math.floor(Math.random() * ENGLISH_QUESTIONS.length)];
+      const modal = document.getElementById('eventModal');
+      const title = document.getElementById('modalTitle');
+      const desc = document.getElementById('modalDesc');
+      const avatar = document.getElementById('modalAvatar');
+      const body = document.getElementById('modalBody');
+
+      avatar.innerText = '📚';
+      title.innerText = 'ENGLISH CHALLENGE!';
+      desc.innerText = q.q;
+
+      let optionsHtml = '<div class="quiz-options">';
+      q.options.forEach((opt, idx) => {
+        optionsHtml += `<button class="btn-opt" onclick="checkQuizAnswer(${idx}, ${q.correct})">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
+      });
+      optionsHtml += '</div>';
+
+      body.innerHTML = optionsHtml;
+      modal.style.display = 'flex';
+    }
+
+    function checkQuizAnswer(selected, correct) {
+      const modal = document.getElementById('eventModal');
+      if (selected === correct) {
+        playBeep(880, 'sine', 0.25);
+        score += 30;
+        document.getElementById('scoreDisplay').innerText = score;
+        alert('🎉 CHÍNH XÁC! Bạn được cộng +30 điểm và an toàn đi tiếp!');
+        addLog('✅ Trả lời đúng câu hỏi tiếng Anh (+30đ)!');
+      } else {
+        playBeep(150, 'sawtooth', 0.3);
+        playerPosition = Math.max(1, playerPosition - 2);
+        updateTokenPosition(playerPosition);
+        alert('❌ Chưa chính xác rồi! Bạn bị phạt lùi lại 2 bước để ôn bài nhé!');
+        addLog(`❌ Trả lời sai! Lùi về ô ${playerPosition}!`);
+      }
+      modal.style.display = 'none';
+      finishTurn();
+    }
+
+    function triggerModal(titleText, descText, avatarIcon, onConfirm) {
+      const modal = document.getElementById('eventModal');
+      document.getElementById('modalTitle').innerText = titleText;
+      document.getElementById('modalDesc').innerText = descText;
+      document.getElementById('modalAvatar').innerText = avatarIcon;
+
+      const body = document.getElementById('modalBody');
+      body.innerHTML = `<button class="btn-primary" id="modalOkBtn">TIẾP TỤC</button>`;
+
+      modal.style.display = 'flex';
+      document.getElementById('modalOkBtn').onclick = () => {
+        modal.style.display = 'none';
+        if (onConfirm) onConfirm();
+      };
+    }
+
+    function finishTurn() {
+      turns++;
+      document.getElementById('turnDisplay').innerText = turns;
+      isRolling = false;
+      document.getElementById('rollBtn').disabled = false;
+    }
+
+    function resetGame() {
+      playerPosition = 1;
+      score = 0;
+      turns = 1;
+      document.getElementById('scoreDisplay').innerText = 0;
+      document.getElementById('turnDisplay').innerText = 1;
+      updateTokenPosition(1);
+      finishTurn();
+    }
+
+    // Khởi tạo bàn cờ khi tải trang
+    window.onload = () => {
+      generateBoard();
+      window.addEventListener('resize', () => updateTokenPosition(playerPosition, false));
+    };
+  </script>
+</body>
+</html>
