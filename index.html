@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safari English Board Game - ESL Jungle Quest</title>
+  <title>Safari English Board Game - Pro Teacher Edition</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
@@ -146,6 +146,7 @@
       padding: 3px;
       cursor: default;
       transition: transform 0.15s;
+      overflow: hidden;
     }
 
     .cell-num {
@@ -155,6 +156,7 @@
       font-size: clamp(10px, 2vw, 12px);
       font-weight: 800;
       color: #94a3b8;
+      z-index: 2;
     }
 
     .cell-badge {
@@ -164,9 +166,9 @@
       text-align: center;
       line-height: 1;
       padding-bottom: 2px;
+      z-index: 2;
     }
 
-    /* Cell Variants */
     .cell.start-cell { background: #e0f2fe; border-color: #38bdf8; color: #0369a1; }
     .cell.finish-cell { background: linear-gradient(135deg, #fef08a, #f59e0b); border-color: #d97706; color: #78350f; }
     .cell.lion { background: #ffedd5; border-color: #fb923c; color: #c2410c; }
@@ -183,6 +185,16 @@
       align-items: center;
       justify-content: center;
       filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
+      max-width: 80%;
+      max-height: 50%;
+    }
+
+    .cell-icon-box img {
+      width: 100%;
+      height: 100%;
+      max-height: 38px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
     }
 
     .player-token {
@@ -424,50 +436,45 @@
       border-left: 4px solid #10b981;
     }
 
-    /* 3D Animations */
-    .anim-3d-box {
-      width: 130px;
-      height: 130px;
+    /* 3D Visual Box for Modals */
+    .modal-3d-visual {
+      width: 150px;
+      height: 150px;
       margin: 0 auto 12px;
-      position: relative;
-      perspective: 800px;
+      perspective: 1000px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .lion-head-3d {
-      width: 100px;
-      height: 100px;
-      position: relative;
-      animation: lionRoarCycle 1.2s infinite ease-in-out;
+    .modal-3d-visual img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 18px rgba(0,0,0,0.3));
+      animation: popFloat 2s infinite alternate ease-in-out;
       transform-style: preserve-3d;
     }
 
-    @keyframes lionRoarCycle {
-      0%, 100% { transform: rotateY(0deg) scale(1); }
-      30% { transform: rotateY(-18deg) scale(1.05); }
-      60% { transform: rotateY(18deg) scale(1.2) translateY(-6px); }
+    @keyframes popFloat {
+      0% { transform: translateY(0px) rotateY(-8deg) scale(1); }
+      100% { transform: translateY(-12px) rotateY(12deg) scale(1.08); }
     }
 
-    .snake-3d {
-      width: 110px;
-      height: 100px;
-      animation: snakeSlither 1.4s infinite ease-in-out;
+    .quiz-img-container {
+      max-width: 240px;
+      max-height: 140px;
+      margin: 0 auto 12px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+      border: 2px solid #cbd5e1;
     }
 
-    @keyframes snakeSlither {
-      0%, 100% { transform: scaleX(1) rotate(0deg); }
-      50% { transform: scaleX(1.15) rotate(8deg) translateY(-8px); }
-    }
-
-    .barrier-3d {
-      animation: barrierPulse 1s infinite alternate ease-in-out;
-    }
-
-    @keyframes barrierPulse {
-      from { transform: scale(1); }
-      to { transform: scale(1.12); }
+    .quiz-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
 
     .modal-overlay {
@@ -487,7 +494,7 @@
       width: 100%;
       max-width: 440px;
       border-radius: 28px;
-      padding: 26px 20px;
+      padding: 24px 20px;
       text-align: center;
       box-shadow: 0 25px 50px rgba(0,0,0,0.3);
       position: relative;
@@ -511,21 +518,6 @@
       font-weight: 600;
       margin-bottom: 16px;
       line-height: 1.4;
-    }
-
-    .tts-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #ede9fe;
-      color: #6d28d9;
-      border: 1px solid #c4b5fd;
-      padding: 6px 14px;
-      border-radius: 30px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      margin-bottom: 14px;
     }
 
     .quiz-options-list {
@@ -566,13 +558,14 @@
       box-shadow: 0 6px 15px rgba(37, 99, 235, 0.35);
     }
 
+    /* Teacher Modal */
     .teacher-modal-box {
       background: #ffffff;
       width: 100%;
-      max-width: 680px;
-      max-height: 85vh;
+      max-width: 720px;
+      max-height: 90vh;
       border-radius: 24px;
-      padding: 24px;
+      padding: 22px;
       display: flex;
       flex-direction: column;
       box-shadow: 0 25px 50px rgba(0,0,0,0.3);
@@ -583,7 +576,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       border-bottom: 2px solid #f1f5f9;
       padding-bottom: 10px;
     }
@@ -593,7 +586,7 @@
       flex: 1;
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
       padding-right: 6px;
     }
 
@@ -647,6 +640,73 @@
 
     .form-input:focus, .form-select:focus {
       outline: none;
+      border-color: #6366f1;
+    }
+
+    /* Question list item for editing/deleting */
+    .q-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 10px;
+    }
+
+    .q-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      gap: 8px;
+    }
+
+    .q-item-info {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .q-item-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-small {
+      padding: 5px 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-edit { background: #3b82f6; color: white; }
+    .btn-del { background: #ef4444; color: white; }
+
+    .file-input-label {
+      background: #f1f5f9;
+      border: 2px dashed #94a3b8;
+      border-radius: 10px;
+      padding: 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      display: block;
+      transition: all 0.2s;
+    }
+
+    .file-input-label:hover {
+      background: #e2e8f0;
       border-color: #6366f1;
     }
 
@@ -718,12 +778,13 @@
           <i class="fa-solid fa-scroll"></i> Adventure Log
         </div>
         <div class="log-feed" id="logFeed">
-          <div class="log-item">🌿 Welcome adventurers to the Safari English Quest!</div>
+          <div class="log-item">🌿 Welcome adventurers to Safari English Quest!</div>
         </div>
       </div>
     </aside>
   </main>
 
+  <!-- Interactive Modal -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-box" id="modalBox">
       <div id="modalAnimContainer"></div>
@@ -733,6 +794,7 @@
     </div>
   </div>
 
+  <!-- Teacher Dashboard Modal -->
   <div class="modal-overlay" id="teacherModal">
     <div class="teacher-modal-box">
       <div class="teacher-header">
@@ -745,6 +807,7 @@
       </div>
 
       <div class="teacher-content">
+        <!-- 1. Teams & Steps -->
         <div class="config-section">
           <div class="config-title"><i class="fa-solid fa-users-gear"></i> Number of Teams (1 - 4 Teams)</div>
           <div class="form-row">
@@ -764,6 +827,35 @@
           </div>
         </div>
 
+        <!-- 2. Custom Images & Sprites for Animals/Barriers -->
+        <div class="config-section">
+          <div class="config-title"><i class="fa-solid fa-image"></i> Custom 3D Animal & Barrier Images (Upload)</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Lion Image / GIF:</label>
+              <label class="file-input-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Lion Image
+                <input type="file" accept="image/*" style="display:none;" onchange="handleAssetUpload(event, 'lion')">
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Snake Image / GIF:</label>
+              <label class="file-input-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Snake Image
+                <input type="file" accept="image/*" style="display:none;" onchange="handleAssetUpload(event, 'snake')">
+              </label>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Barrier / Obstacle Image:</label>
+              <label class="file-input-label">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Barrier Image
+                <input type="file" accept="image/*" style="display:none;" onchange="handleAssetUpload(event, 'barrier')">
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Tiles, Traps & Barriers Allocation -->
         <div class="config-section">
           <div class="config-title"><i class="fa-solid fa-map-location-dot"></i> Tiles, Traps & Jungle Barriers</div>
           <div class="form-row">
@@ -788,7 +880,7 @@
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Jungle Barriers 🛑 (Obstacles/Traps):</label>
+              <label class="form-label">Jungle Barriers 🛑 (Obstacles):</label>
               <input type="text" class="form-input" id="cfgBarriers" value="10, 20, 30">
             </div>
             <div class="form-group">
@@ -798,12 +890,24 @@
           </div>
         </div>
 
+        <!-- 4. Manage & Edit Quiz Bank -->
         <div class="config-section">
-          <div class="config-title"><i class="fa-solid fa-book-open"></i> Add Custom English Question</div>
+          <div class="config-title"><i class="fa-solid fa-book-open"></i> Question Bank Manager (Create / Edit / Delete)</div>
+          <input type="hidden" id="editingQuizIndex" value="-1">
+
           <div class="form-group" style="margin-bottom: 8px;">
             <label class="form-label">Question Text:</label>
             <input type="text" class="form-input" id="newQText" placeholder="e.g., Which animal has stripes?">
           </div>
+
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Optional Question Image (Upload):</label>
+            <label class="file-input-label">
+              <span id="quizImageName"><i class="fa-solid fa-image"></i> Click to Upload Quiz Image</span>
+              <input type="file" accept="image/*" style="display:none;" id="quizImageInput" onchange="handleQuizImageUpload(event)">
+            </label>
+          </div>
+
           <div class="form-row">
             <div class="form-group">
               <label class="form-label">Option A:</label>
@@ -839,21 +943,36 @@
               <input type="number" class="form-input" id="newScoreVal" value="30">
             </div>
           </div>
-          <button class="action-btn" style="width: 100%; margin-top: 6px;" onclick="addTeacherQuestion()">
-            <i class="fa-solid fa-plus"></i> Add to Question Bank
-          </button>
+
+          <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <button class="action-btn" id="saveQuizBtn" style="flex: 2;" onclick="saveOrUpdateQuiz()">
+              <i class="fa-solid fa-plus"></i> Add Question
+            </button>
+            <button class="action-btn" id="cancelEditBtn" style="flex: 1; background: #64748b; display: none;" onclick="cancelQuizEdit()">
+              Cancel
+            </button>
+          </div>
+
+          <!-- Existing Question List -->
+          <div style="margin-top: 14px;">
+            <label class="form-label">Current Questions in Bank:</label>
+            <div class="q-list" id="questionsList"></div>
+          </div>
         </div>
       </div>
 
       <div style="margin-top: 14px; display: flex; justify-content: flex-end; gap: 10px;">
         <button class="action-btn" style="background: #10b981;" onclick="applyTeacherConfig()">
-          <i class="fa-solid fa-check"></i> Apply & Restart Game
+          <i class="fa-solid fa-check"></i> Apply Configurations & Restart
         </button>
       </div>
     </div>
   </div>
 
   <script>
+    /* =========================================================
+       AUDIO SYNTHESIZERS (Realistic Animal Roars, Hiss, Crashes)
+       ========================================================= */
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
     function initAudio() {
@@ -875,98 +994,114 @@
       osc.stop(audioCtx.currentTime + duration);
     }
 
+    // Realistic Deep Lion Roar & Growl
     function playLionSound() {
       initAudio();
-      for (let i = 0; i < 7; i++) {
-        setTimeout(() => playTone(80 + Math.random() * 40, 'sawtooth', 0.3), i * 50);
+      const t = audioCtx.currentTime;
+      for (let i = 0; i < 9; i++) {
+        setTimeout(() => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(55 + Math.random() * 35, audioCtx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(40, audioCtx.currentTime + 0.35);
+          gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.35);
+        }, i * 50);
       }
+    }
+
+    // Realistic Snake Hiss (Khè lưỡi xì xì) using Filtered White Noise
+    function playSnakeSound() {
+      initAudio();
+      const bufferSize = audioCtx.sampleRate * 0.6;
+      const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = Math.random() * 2 - 1;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(3200, audioCtx.currentTime);
+      filter.Q.setValueAtTime(3.5, audioCtx.currentTime);
+
+      const gain = audioCtx.createGain();
+      gain.gain.setValueAtTime(0.01, audioCtx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.22, audioCtx.currentTime + 0.1);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.55);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      noise.start();
+      noise.stop(audioCtx.currentTime + 0.6);
+    }
+
+    // Barrier Crash / Boulder sound
+    function playBarrierSound() {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(110, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.45);
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.45);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.45);
     }
 
     function playLadderSound() {
       [523, 659, 783, 1046].forEach((n, i) => setTimeout(() => playTone(n, 'triangle', 0.2), i * 80));
     }
 
-    function playSnakeSound() {
-      initAudio();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(360, audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(120, audioCtx.currentTime + 0.4);
-      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.4);
-    }
-
-    function playBarrierSound() {
-      initAudio();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'square';
-      osc.frequency.setValueAtTime(140, audioCtx.currentTime);
-      osc.frequency.setValueAtTime(90, audioCtx.currentTime + 0.15);
-      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + 0.35);
-    }
-
-    function speakEnglish(text) {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'en-US';
-        utter.rate = 0.9;
-        window.speechSynthesis.speak(utter);
-      }
-    }
-
-    const ANIMAL_SVGS = {
-      lion: `
-        <div class="anim-3d-box">
-          <svg class="lion-head-3d" viewBox="0 0 120 120">
-            <circle cx="60" cy="60" r="54" fill="#f97316" filter="drop-shadow(0 6px 8px rgba(0,0,0,0.25))" />
-            <circle cx="60" cy="60" r="48" fill="#ea580c" />
-            <ellipse cx="60" cy="62" rx="36" ry="32" fill="#fed7aa" />
-            <circle cx="34" cy="34" r="12" fill="#ea580c" />
-            <circle cx="34" cy="34" r="7" fill="#fed7aa" />
-            <circle cx="86" cy="34" r="12" fill="#ea580c" />
-            <circle cx="86" cy="34" r="7" fill="#fed7aa" />
-            <ellipse cx="46" cy="54" rx="5" ry="7" fill="#1e293b" />
-            <circle cx="48" cy="52" r="2" fill="#ffffff" />
-            <ellipse cx="74" cy="54" rx="5" ry="7" fill="#1e293b" />
-            <circle cx="76" cy="52" r="2" fill="#ffffff" />
-            <polygon points="60,64 54,72 66,72" fill="#7c2d12" />
-            <path d="M50 75 Q60 92 70 75 Z" fill="#991b1b" stroke="#450a0a" stroke-width="2" />
-            <polygon points="56,75 58,79 60,75" fill="#ffffff" />
-            <polygon points="60,75 62,79 64,75" fill="#ffffff" />
-          </svg>
-        </div>
-      `,
-      snake: `
-        <div class="anim-3d-box">
-          <svg class="snake-3d" viewBox="0 0 120 120">
-            <path d="M20 90 Q40 50 60 85 T100 50" fill="none" stroke="#22c55e" stroke-width="16" stroke-linecap="round" filter="drop-shadow(0 8px 10px rgba(0,0,0,0.2))" />
-            <path d="M20 90 Q40 50 60 85 T100 50" fill="none" stroke="#15803d" stroke-width="6" stroke-linecap="round" stroke-dasharray="10 12" />
-            <ellipse cx="102" cy="46" rx="14" ry="12" fill="#16a34a" />
-            <circle cx="106" cy="42" r="4" fill="#facc15" />
-            <circle cx="107" cy="42" r="2" fill="#0f172a" />
-            <path d="M116 46 L124 42 M116 46 L124 50" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
-          </svg>
-        </div>
-      `,
-      barrier: `
-        <div class="anim-3d-box barrier-3d">
-          <div style="font-size: 80px; filter: drop-shadow(0 8px 12px rgba(234, 88, 12, 0.4));">🚧</div>
-        </div>
-      `
+    /* =========================================================
+       ASSET STORAGE (Default SVG / Custom Uploaded Images)
+       ========================================================= */
+    const ASSETS = {
+      lion: "https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=200&auto=format&fit=crop&q=80",
+      snake: "https://images.unsplash.com/photo-1531386151447-fd76ad50012f?w=200&auto=format&fit=crop&q=80",
+      barrier: "https://images.unsplash.com/photo-1541888946425-d0fbb186f5f7?w=200&auto=format&fit=crop&q=80"
     };
 
+    let tempQuizImageBase64 = null;
+
+    function handleAssetUpload(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        ASSETS[type] = e.target.result;
+        buildBoardUI();
+        alert(`Custom ${type.toUpperCase()} image successfully uploaded!`);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleQuizImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        tempQuizImageBase64 = e.target.result;
+        document.getElementById('quizImageName').innerText = `✅ Image Attached: ${file.name}`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /* =========================================================
+       GAME STATE & CONFIGURATION
+       ========================================================= */
     const TEAM_PRESETS = [
       { id: 0, name: "Red Team", color: "#ef4444", icon: "🔴", pos: 1, score: 0, skipNext: false },
       { id: 1, name: "Blue Team", color: "#3b82f6", icon: "🔵", pos: 1, score: 0, skipNext: false },
@@ -991,25 +1126,22 @@
     let questionBank = [
       {
         question: "What is the opposite of 'EXPENSIVE'?",
+        image: null,
         options: ["Rich", "Cheap", "High", "Heavy"],
         answer: 1,
         score: 30
       },
       {
         question: "Which wild animal is known for its black and white stripes?",
+        image: "https://images.unsplash.com/photo-1509114397022-ed747cca3f65?w=200&auto=format&fit=crop&q=80",
         options: ["Zebra", "Tiger", "Giraffe", "Panda"],
         answer: 0,
         score: 30
       },
       {
         question: "Yesterday, we ______ a funny monkey at the safari park.",
+        image: null,
         options: ["see", "saw", "seen", "seeing"],
-        answer: 1,
-        score: 30
-      },
-      {
-        question: "How many legs does a spider have?",
-        options: ["Six", "Eight", "Ten", "Four"],
         answer: 1,
         score: 30
       }
@@ -1021,6 +1153,7 @@
       renderTeamsLeaderboard();
       buildBoardUI();
       createPlayerTokens();
+      renderTeacherQuestionList();
     }
 
     function renderTeamsLeaderboard() {
@@ -1075,24 +1208,24 @@
             tile.innerHTML = `<span class="cell-num">36</span><span class="cell-icon-box">🏆</span><span class="cell-badge">GOAL</span>`;
           } else if (boardConfig.lions.includes(num)) {
             tile.classList.add('lion');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🦁</span><span class="cell-badge">Lion Trap</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box"><img src="${ASSETS.lion}" alt="Lion"></span><span class="cell-badge">Lion</span>`;
           } else if (boardConfig.snakes[num]) {
             tile.classList.add('snake');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🐍</span><span class="cell-badge">Slide to ${boardConfig.snakes[num]}</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box"><img src="${ASSETS.snake}" alt="Snake"></span><span class="cell-badge">To ${boardConfig.snakes[num]}</span>`;
           } else if (boardConfig.ladders[num]) {
             tile.classList.add('ladder');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🪜</span><span class="cell-badge">Climb to ${boardConfig.ladders[num]}</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🪜</span><span class="cell-badge">To ${boardConfig.ladders[num]}</span>`;
           } else if (boardConfig.treasures.includes(num)) {
             tile.classList.add('treasure');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">💎</span><span class="cell-badge">2x Points</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">💎</span><span class="cell-badge">2x Pts</span>`;
           } else if (boardConfig.barriers.includes(num)) {
             tile.classList.add('barrier');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🛑</span><span class="cell-badge">Barrier</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box"><img src="${ASSETS.barrier}" alt="Barrier"></span><span class="cell-badge">Barrier</span>`;
           } else if (boardConfig.quizzes.includes(num)) {
             tile.classList.add('quiz');
             tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">❓</span><span class="cell-badge">Quiz</span>`;
           } else {
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🌿</span><span class="cell-badge">Safe Zone</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🌿</span><span class="cell-badge">Safe</span>`;
           }
 
           grid.appendChild(tile);
@@ -1152,17 +1285,14 @@
 
     function handleRoll() {
       if (isRolling) return;
-
       const team = activeTeams[currentTeamIdx];
 
-      // Handle Quicksand / Barrier Skip Turn
       if (team.skipNext) {
         team.skipNext = false;
-        showEventModal('⏳ MISSED TURN!', `<b>${team.name}</b> is breaking free from the Quicksand barrier! You must skip this turn!`, '<div style="font-size: 70px;">🕳️</div>', () => {
-          addLog(`⏳ <b>${team.name}</b> skipped their turn to escape the barrier!`);
+        showEventModal('⏳ MISSED TURN!', `<b>${team.name}</b> is breaking free from the barrier and skips this turn!`, `<div class="modal-3d-visual"><img src="${ASSETS.barrier}"></div>`, () => {
+          addLog(`⏳ <b>${team.name}</b> skipped their turn to clear the barrier!`);
           finishTurn();
         });
-        speakEnglish(`${team.name} misses this turn to escape the barrier.`);
         return;
       }
 
@@ -1185,7 +1315,6 @@
 
       setTimeout(() => {
         addLog(`🎲 <b>${team.name}</b> rolled a <b>${rollVal}</b>!`);
-        speakEnglish(`${team.name} rolled a ${rollVal}!`);
         moveTeamStepByStep(team, rollVal);
       }, 1150);
     }
@@ -1214,110 +1343,98 @@
     function resolveTileAction(team) {
       const pos = team.pos;
 
-      // 1. Lion Trap
+      // 1. Lion Attack
       if (boardConfig.lions.includes(pos)) {
         playLionSound();
-        showEventModal('🦁 LION ATTACK!', `A fierce lion roars loudly! <b>${team.name}</b> runs back 3 steps!`, ANIMAL_SVGS.lion, () => {
+        const visual = `<div class="modal-3d-visual"><img src="${ASSETS.lion}" alt="Lion"></div>`;
+        showEventModal('🦁 LION ATTACK!', `A ferocious lion roars loudly! <b>${team.name}</b> runs back 3 steps!`, visual, () => {
           document.getElementById('boardBox').classList.add('screen-shake');
           setTimeout(() => document.getElementById('boardBox').classList.remove('screen-shake'), 450);
 
           team.pos = Math.max(1, team.pos - 3);
           syncTokenPosition(team.id, team.pos);
           renderTeamsLeaderboard();
-          addLog(`😱 <b>${team.name}</b> stepped on a lion! Retreated to Tile ${team.pos}!`);
+          addLog(`😱 <b>${team.name}</b> encountered a lion! Moved back to Tile ${team.pos}!`);
           finishTurn();
         });
-        speakEnglish("Look out! A lion roars! Step back three tiles!");
       }
       // 2. Snake Slide
       else if (boardConfig.snakes[pos]) {
         playSnakeSound();
         const target = boardConfig.snakes[pos];
-        showEventModal('🐍 GIANT PYTHON!', `Oh no! Slid down the giant snake to Tile ${target}!`, ANIMAL_SVGS.snake, () => {
+        const visual = `<div class="modal-3d-visual"><img src="${ASSETS.snake}" alt="Snake"></div>`;
+        showEventModal('🐍 GIANT PYTHON!', `A hissing snake sends <b>${team.name}</b> sliding down to Tile ${target}!`, visual, () => {
           team.pos = target;
           syncTokenPosition(team.id, team.pos);
           renderTeamsLeaderboard();
-          addLog(`😢 <b>${team.name}</b> slid down to Tile ${target}!`);
+          addLog(`😢 <b>${team.name}</b> slid down the snake to Tile ${target}!`);
           finishTurn();
         });
-        speakEnglish(`Oh no! Slipping down the snake to tile ${target}!`);
       }
-      // 3. Wooden Ladder
+      // 3. Ladder
       else if (boardConfig.ladders[pos]) {
         playLadderSound();
         const target = boardConfig.ladders[pos];
-        showEventModal('🪜 MAGIC LADDER!', `Awesome climb! <b>${team.name}</b> advances directly to Tile ${target}!`, '<div style="font-size: 70px;">🪜</div>', () => {
+        showEventModal('🪜 MAGIC LADDER!', `Great climb! <b>${team.name}</b> advances to Tile ${target}!`, '<div style="font-size: 70px;">🪜</div>', () => {
           team.pos = target;
           team.score += 20;
           syncTokenPosition(team.id, team.pos);
           renderTeamsLeaderboard();
-          addLog(`🚀 <b>${team.name}</b> climbed the ladder to Tile ${target} (+20 pts)!`);
+          addLog(`🚀 <b>${team.name}</b> climbed to Tile ${target} (+20 pts)!`);
           finishTurn();
         });
-        speakEnglish(`Super! Climb the magic ladder to tile ${target}!`);
       }
-      // 4. Treasure Double Points
+      // 4. Treasure
       else if (boardConfig.treasures.includes(pos)) {
         playLadderSound();
         team.score *= 2;
-        showEventModal('💎 TREASURE CHEST!', `Incredible luck! <b>${team.name}</b> doubled their total score!`, '<div style="font-size: 70px;">💎</div>', () => {
+        showEventModal('💎 TREASURE CHEST!', `Incredible discovery! <b>${team.name}</b> doubled their total score!`, '<div style="font-size: 70px;">💎</div>', () => {
           renderTeamsLeaderboard();
           addLog(`✨ <b>${team.name}</b> doubled their score to ${team.score}!`);
           finishTurn();
         });
-        speakEnglish("Incredible treasure! Points doubled!");
       }
-      // 5. Jungle Barriers & Obstacles (Quicksand, Fallen Trees, Rockslides)
+      // 5. Barrier
       else if (boardConfig.barriers.includes(pos)) {
         playBarrierSound();
-        handleBarrierEvent(team, pos);
+        const visual = `<div class="modal-3d-visual"><img src="${ASSETS.barrier}" alt="Barrier"></div>`;
+        if (pos === 10) {
+          team.skipNext = true;
+          renderTeamsLeaderboard();
+          showEventModal('🛑 JUNGLE QUICKSAND!', `<b>${team.name}</b> is stuck in quicksand! You must <b>SKIP YOUR NEXT TURN</b>!`, visual, () => {
+            addLog(`🛑 <b>${team.name}</b> hit quicksand (Skip next turn)!`);
+            finishTurn();
+          });
+        } else if (pos === 20) {
+          showEventModal('🪵 FALLEN TREE BARRIER!', `A massive obstacle blocks the way! <b>${team.name}</b> steps back 2 steps!`, visual, () => {
+            team.pos = Math.max(1, team.pos - 2);
+            syncTokenPosition(team.id, team.pos);
+            renderTeamsLeaderboard();
+            addLog(`🪵 <b>${team.name}</b> knocked back to Tile ${team.pos}!`);
+            finishTurn();
+          });
+        } else {
+          team.score = Math.max(0, team.score - 15);
+          showEventModal('🪨 ROCKSLIDE BARRIER!', `Falling rocks! <b>${team.name}</b> loses 15 points!`, visual, () => {
+            renderTeamsLeaderboard();
+            addLog(`🪨 <b>${team.name}</b> lost 15 points at the barrier!`);
+            finishTurn();
+          });
+        }
       }
-      // 6. English Quiz Challenge
+      // 6. English Quiz
       else if (boardConfig.quizzes.includes(pos)) {
         openEnglishQuiz(team);
       }
-      // 7. Victory Goal
+      // 7. Victory
       else if (pos === 36) {
         confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
-        showEventModal('🏆 VICTORY!', `Congratulations <b>${team.name}</b>! You conquered the Safari Jungle with ${team.score} points!`, '<div style="font-size: 80px;">👑</div>', () => {
+        showEventModal('🏆 VICTORY!', `Congratulations <b>${team.name}</b>! You conquered the Safari with ${team.score} points!`, '<div style="font-size: 80px;">👑</div>', () => {
           finishTurn();
         });
-        speakEnglish(`Congratulations ${team.name}! You won the game!`);
       }
       else {
         finishTurn();
-      }
-    }
-
-    function handleBarrierEvent(team, pos) {
-      if (pos === 10) {
-        // Quicksand Trap: Lose next turn
-        team.skipNext = true;
-        renderTeamsLeaderboard();
-        showEventModal('🕳️ QUICKSAND BARRIER!', `<b>${team.name}</b> got stuck in deep quicksand! You must <b>SKIP YOUR NEXT TURN</b> to pull yourself out!`, ANIMAL_SVGS.barrier, () => {
-          addLog(`🛑 <b>${team.name}</b> got stuck in Quicksand (Skip next turn)!`);
-          finishTurn();
-        });
-        speakEnglish("Quicksand barrier! You miss your next turn!");
-      } else if (pos === 20) {
-        // Fallen Tree: Knocked back 2 steps
-        showEventModal('🪵 FALLEN TREE BARRIER!', `A massive ancient tree blocks the pathway! <b>${team.name}</b> is forced back 2 steps!`, ANIMAL_SVGS.barrier, () => {
-          team.pos = Math.max(1, team.pos - 2);
-          syncTokenPosition(team.id, team.pos);
-          renderTeamsLeaderboard();
-          addLog(`🪵 Fallen Tree blocked <b>${team.name}</b> (Moved back to Tile ${team.pos})!`);
-          finishTurn();
-        });
-        speakEnglish("A huge tree blocks the path! Step back two tiles!");
-      } else {
-        // Rockslide Barrier: Lose 15 points
-        team.score = Math.max(0, team.score - 15);
-        showEventModal('🪨 ROCKSLIDE BARRIER!', `Rolling boulders! <b>${team.name}</b> dodges safely but drops equipment (-15 points)!`, ANIMAL_SVGS.barrier, () => {
-          renderTeamsLeaderboard();
-          addLog(`🪨 Rockslide penalty for <b>${team.name}</b> (-15 pts)!`);
-          finishTurn();
-        });
-        speakEnglish("Rockslide! Minus fifteen points!");
       }
     }
 
@@ -1333,17 +1450,16 @@
       const desc = document.getElementById('modalDesc');
       const body = document.getElementById('modalInteractiveArea');
 
-      animBox.innerHTML = '<div style="font-size: 65px;">📚</div>';
+      let visualHtml = '<div style="font-size: 55px; margin-bottom: 8px;">📚</div>';
+      if (q.image) {
+        visualHtml = `<div class="quiz-img-container"><img src="${q.image}" alt="Quiz Illustration"></div>`;
+      }
+      animBox.innerHTML = visualHtml;
+
       title.innerText = `CHALLENGE: ${team.name}`;
       desc.innerText = q.question;
 
-      let html = `
-        <button class="tts-btn" onclick="speakEnglish('${q.question.replace(/'/g, "\\'")}')">
-          <i class="fa-solid fa-volume-high"></i> Listen to Question
-        </button>
-        <div class="quiz-options-list">
-      `;
-
+      let html = `<div class="quiz-options-list">`;
       q.options.forEach((opt, idx) => {
         html += `
           <button class="quiz-opt-btn" onclick="checkAnswer(${idx}, ${q.answer}, ${q.score})">
@@ -1355,7 +1471,6 @@
 
       body.innerHTML = html;
       modal.style.display = 'flex';
-      speakEnglish(q.question);
     }
 
     function checkAnswer(selected, correct, scoreVal) {
@@ -1366,21 +1481,19 @@
         playLadderSound();
         team.score += scoreVal;
         renderTeamsLeaderboard();
-        showEventModal('🎉 EXCELLENT!', `Great pronunciation & grammar! <b>${team.name}</b> earned +${scoreVal} points!`, '<div style="font-size: 70px;">🌟</div>', () => {
+        showEventModal('🎉 EXCELLENT!', `Correct answer! <b>${team.name}</b> earned +${scoreVal} points!`, '<div style="font-size: 70px;">🌟</div>', () => {
           addLog(`✅ <b>${team.name}</b> answered correctly (+${scoreVal} pts)!`);
           finishTurn();
         });
-        speakEnglish(`Correct answer! Plus ${scoreVal} points!`);
       } else {
         playSnakeSound();
         team.pos = Math.max(1, team.pos - 2);
         syncTokenPosition(team.id, team.pos);
         renderTeamsLeaderboard();
-        showEventModal('❌ NOT QUITE!', `Incorrect answer! <b>${team.name}</b> moves back 2 steps to practice again!`, '<div style="font-size: 70px;">💡</div>', () => {
-          addLog(`❌ <b>${team.name}</b> missed the question (Back to Tile ${team.pos})!`);
+        showEventModal('❌ NOT QUITE!', `Incorrect! <b>${team.name}</b> moves back 2 steps!`, '<div style="font-size: 70px;">💡</div>', () => {
+          addLog(`❌ <b>${team.name}</b> missed the quiz (Back to Tile ${team.pos})!`);
           finishTurn();
         });
-        speakEnglish("Nice try! Step back two tiles to review!");
       }
     }
 
@@ -1407,15 +1520,39 @@
       document.getElementById('rollBtn').disabled = false;
     }
 
+    /* =========================================================
+       TEACHER MODAL LOGIC & QUESTION MANAGEMENT
+       ========================================================= */
     function openTeacherModal() {
       document.getElementById('teacherModal').style.display = 'flex';
+      renderTeacherQuestionList();
     }
 
     function closeTeacherModal() {
       document.getElementById('teacherModal').style.display = 'none';
+      cancelQuizEdit();
     }
 
-    function addTeacherQuestion() {
+    function renderTeacherQuestionList() {
+      const list = document.getElementById('questionsList');
+      list.innerHTML = '';
+      questionBank.forEach((q, index) => {
+        const item = document.createElement('div');
+        item.className = 'q-item';
+        item.innerHTML = `
+          <div class="q-item-info">
+            <b>${index + 1}.</b> ${q.question} ${q.image ? '🖼️' : ''}
+          </div>
+          <div class="q-item-btns">
+            <button class="btn-small btn-edit" onclick="editQuiz(${index})">Edit</button>
+            <button class="btn-small btn-del" onclick="deleteQuiz(${index})">Delete</button>
+          </div>
+        `;
+        list.appendChild(item);
+      });
+    }
+
+    function saveOrUpdateQuiz() {
       const q = document.getElementById('newQText').value.trim();
       const a = document.getElementById('newOptA').value.trim();
       const b = document.getElementById('newOptB').value.trim();
@@ -1423,25 +1560,72 @@
       const d = document.getElementById('newOptD').value.trim();
       const correct = parseInt(document.getElementById('newCorrect').value);
       const score = parseInt(document.getElementById('newScoreVal').value) || 30;
+      const editIdx = parseInt(document.getElementById('editingQuizIndex').value);
 
       if (!q || !a || !b || !c || !d) {
-        alert('Please fill out the question and all 4 options!');
+        alert('Please complete the question and all 4 options!');
         return;
       }
 
-      questionBank.push({
+      const quizData = {
         question: q,
+        image: tempQuizImageBase64,
         options: [a, b, c, d],
         answer: correct,
         score: score
-      });
+      };
 
-      alert(`Question successfully added! Question bank now has ${questionBank.length} questions.`);
+      if (editIdx >= 0) {
+        if (!tempQuizImageBase64) quizData.image = questionBank[editIdx].image;
+        questionBank[editIdx] = quizData;
+        alert('Question updated successfully!');
+      } else {
+        questionBank.push(quizData);
+        alert('Question added successfully!');
+      }
+
+      cancelQuizEdit();
+      renderTeacherQuestionList();
+    }
+
+    function editQuiz(index) {
+      const q = questionBank[index];
+      document.getElementById('editingQuizIndex').value = index;
+      document.getElementById('newQText').value = q.question;
+      document.getElementById('newOptA').value = q.options[0];
+      document.getElementById('newOptB').value = q.options[1];
+      document.getElementById('newOptC').value = q.options[2];
+      document.getElementById('newOptD').value = q.options[3];
+      document.getElementById('newCorrect').value = q.answer;
+      document.getElementById('newScoreVal').value = q.score;
+
+      tempQuizImageBase64 = q.image;
+      document.getElementById('quizImageName').innerText = q.image ? '✅ Current Image Kept' : 'Click to Upload Quiz Image';
+
+      document.getElementById('saveQuizBtn').innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update Question';
+      document.getElementById('cancelEditBtn').style.display = 'block';
+    }
+
+    function deleteQuiz(index) {
+      if (confirm(`Are you sure you want to delete question #${index + 1}?`)) {
+        questionBank.splice(index, 1);
+        renderTeacherQuestionList();
+        cancelQuizEdit();
+      }
+    }
+
+    function cancelQuizEdit() {
+      document.getElementById('editingQuizIndex').value = -1;
       document.getElementById('newQText').value = '';
       document.getElementById('newOptA').value = '';
       document.getElementById('newOptB').value = '';
       document.getElementById('newOptC').value = '';
       document.getElementById('newOptD').value = '';
+      document.getElementById('quizImageInput').value = '';
+      document.getElementById('quizImageName').innerHTML = '<i class="fa-solid fa-image"></i> Click to Upload Quiz Image';
+      tempQuizImageBase64 = null;
+      document.getElementById('saveQuizBtn').innerHTML = '<i class="fa-solid fa-plus"></i> Add Question';
+      document.getElementById('cancelEditBtn').style.display = 'none';
     }
 
     function applyTeacherConfig() {
@@ -1480,7 +1664,7 @@
       createPlayerTokens();
       renderTeamsLeaderboard();
       closeTeacherModal();
-      addLog('⚙️ <b>Teacher applied new configurations to the Safari Quest!</b>');
+      addLog('⚙️ <b>Teacher applied custom settings & restarted the game!</b>');
     }
 
     window.addEventListener('load', () => {
