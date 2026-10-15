@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Safari English Board Game - Phiên Bản Lớp Học Cho Giáo Viên</title>
+  <title>Safari English Board Game - ESL Jungle Quest</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
       --accent-blue: #0ea5e9;
       --bg-gradient: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 40%, #fef3c7 100%);
       --text-dark: #0f172a;
-      --card-bg: rgba(255, 255, 255, 0.95);
+      --card-bg: rgba(255, 255, 255, 0.96);
     }
 
     * {
@@ -44,7 +44,6 @@
       overflow-x: hidden;
     }
 
-    /* Top Navigation / Teacher Bar */
     .top-bar {
       display: flex;
       width: 100%;
@@ -95,7 +94,6 @@
       box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45);
     }
 
-    /* Main Container */
     .game-arena {
       display: flex;
       flex-direction: column;
@@ -113,7 +111,6 @@
       }
     }
 
-    /* Board Container */
     .board-container {
       position: relative;
       background: #ffffff;
@@ -137,7 +134,6 @@
       position: relative;
     }
 
-    /* Cell Tiles */
     .cell {
       position: relative;
       background: #f8fafc;
@@ -162,7 +158,7 @@
     }
 
     .cell-badge {
-      font-size: clamp(8px, 1.8vw, 9.5px);
+      font-size: clamp(7.5px, 1.7vw, 9px);
       font-weight: 800;
       text-transform: uppercase;
       text-align: center;
@@ -178,10 +174,10 @@
     .cell.ladder { background: #dcfce7; border-color: #4ade80; color: #15803d; }
     .cell.quiz { background: #ede9fe; border-color: #a78bfa; color: #6d28d9; }
     .cell.treasure { background: #fef9c3; border-color: #facc15; color: #a16207; }
+    .cell.barrier { background: #ffedd5; border-color: #ea580c; color: #9a3412; }
 
-    /* 3D Animal Rendering in Cells */
     .cell-icon-box {
-      font-size: clamp(20px, 4vw, 26px);
+      font-size: clamp(18px, 3.8vw, 24px);
       margin-top: 10px;
       display: flex;
       align-items: center;
@@ -189,11 +185,10 @@
       filter: drop-shadow(0 3px 4px rgba(0,0,0,0.15));
     }
 
-    /* Player Tokens (Multi-Team) */
     .player-token {
       position: absolute;
-      width: clamp(24px, 5.2vw, 32px);
-      height: clamp(24px, 5.2vw, 32px);
+      width: clamp(26px, 5.5vw, 34px);
+      height: clamp(26px, 5.5vw, 34px);
       border-radius: 50%;
       border: 2px solid #ffffff;
       display: flex;
@@ -202,7 +197,7 @@
       color: white;
       font-size: 13px;
       font-weight: 800;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       z-index: 20;
       pointer-events: none;
       transition: left 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.2s ease;
@@ -212,7 +207,6 @@
       transform: scale(1.4) translateY(-14px);
     }
 
-    /* Right Control Panel */
     .dashboard {
       display: flex;
       flex-direction: column;
@@ -221,7 +215,6 @@
       max-width: 440px;
     }
 
-    /* Team Leaderboard Card */
     .teams-panel {
       background: var(--card-bg);
       border-radius: 20px;
@@ -265,6 +258,12 @@
       transform: translateY(-2px);
     }
 
+    .team-item.skipped {
+      opacity: 0.6;
+      border-style: dashed;
+      border-color: #ef4444;
+    }
+
     .team-item-name {
       font-size: 12px;
       font-weight: 800;
@@ -286,7 +285,6 @@
       font-weight: 700;
     }
 
-    /* 3D Dice Box */
     .dice-card {
       background: var(--card-bg);
       border-radius: 22px;
@@ -398,7 +396,6 @@
       cursor: not-allowed;
     }
 
-    /* Logs */
     .log-panel {
       background: var(--card-bg);
       border-radius: 18px;
@@ -427,9 +424,7 @@
       border-left: 4px solid #10b981;
     }
 
-    /* =========================================================
-       3D ANIMAL ANIMATIONS (CSS 3D Vector Models)
-       ========================================================= */
+    /* 3D Animations */
     .anim-3d-box {
       width: 130px;
       height: 130px;
@@ -441,7 +436,6 @@
       justify-content: center;
     }
 
-    /* 3D Lion Roar Animation */
     .lion-head-3d {
       width: 100px;
       height: 100px;
@@ -456,7 +450,6 @@
       60% { transform: rotateY(18deg) scale(1.2) translateY(-6px); }
     }
 
-    /* 3D Snake Slither */
     .snake-3d {
       width: 110px;
       height: 100px;
@@ -468,7 +461,15 @@
       50% { transform: scaleX(1.15) rotate(8deg) translateY(-8px); }
     }
 
-    /* Modal / Popup */
+    .barrier-3d {
+      animation: barrierPulse 1s infinite alternate ease-in-out;
+    }
+
+    @keyframes barrierPulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.12); }
+    }
+
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -565,9 +566,6 @@
       box-shadow: 0 6px 15px rgba(37, 99, 235, 0.35);
     }
 
-    /* =========================================================
-       TEACHER CONTROL PANEL MODAL (Tùy biến giáo viên)
-       ========================================================= */
     .teacher-modal-box {
       background: #ffffff;
       width: 100%;
@@ -638,7 +636,7 @@
       color: #64748b;
     }
 
-    .form-input, .form-select, .form-textarea {
+    .form-input, .form-select {
       padding: 8px 12px;
       border: 2px solid #cbd5e1;
       border-radius: 10px;
@@ -647,12 +645,11 @@
       font-weight: 600;
     }
 
-    .form-input:focus, .form-select:focus, .form-textarea:focus {
+    .form-input:focus, .form-select:focus {
       outline: none;
       border-color: #6366f1;
     }
 
-    /* Screen shake */
     .screen-shake {
       animation: heavyShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
@@ -667,7 +664,6 @@
 </head>
 <body>
 
-  <!-- Top bar with Teacher Settings -->
   <div class="top-bar">
     <div class="title-banner">
       <span>🦁🌴</span>
@@ -676,32 +672,28 @@
     </div>
     <button class="teacher-btn" onclick="openTeacherModal()">
       <i class="fa-solid fa-sliders"></i>
-      <span>Cấu hình Giáo Viên</span>
+      <span>Teacher Settings</span>
     </button>
   </div>
 
   <main class="game-arena">
-    <!-- Board -->
     <div class="board-container" id="boardBox">
       <div class="board-grid" id="boardGrid"></div>
       <div id="tokensContainer"></div>
     </div>
 
-    <!-- Dashboard -->
     <aside class="dashboard">
-      <!-- Teams panel -->
       <div class="teams-panel">
         <div class="teams-header">
-          <span><i class="fa-solid fa-users"></i> Bảng Điểm Các Đội</span>
-          <span id="turnIndicatorBadge">Lượt: Đội 1</span>
+          <span><i class="fa-solid fa-users"></i> Team Leaderboard</span>
+          <span id="turnIndicatorBadge">Turn: Red Team</span>
         </div>
         <div class="team-badge-row" id="teamsListContainer"></div>
       </div>
 
-      <!-- 3D Dice Card -->
       <div class="dice-card">
-        <div class="turn-announcer" id="turnAnnouncer" style="background: #e0e7ff; color: #4338ca;">
-          Đang đến lượt: <b>Đội 1 (Đỏ)</b>
+        <div class="turn-announcer" id="turnAnnouncer" style="background: #fee2e2; color: #dc2626;">
+          Current Turn: <b>🔴 Red Team</b>
         </div>
 
         <div class="dice-stage">
@@ -717,38 +709,35 @@
 
         <button class="roll-btn" id="rollBtn" onclick="handleRoll()">
           <i class="fa-solid fa-dice-d6"></i>
-          <span>LẮC XÚC XẮC</span>
+          <span>ROLL THE DICE</span>
         </button>
       </div>
 
-      <!-- Log feed -->
       <div class="log-panel">
         <div style="font-size: 13px; font-weight: 800; color: #64748b; text-transform: uppercase;">
-          <i class="fa-solid fa-scroll"></i> Nhật ký trận đấu
+          <i class="fa-solid fa-scroll"></i> Adventure Log
         </div>
         <div class="log-feed" id="logFeed">
-          <div class="log-item">🌿 Chào mừng các đội đến với Safari English Quest!</div>
+          <div class="log-item">🌿 Welcome adventurers to the Safari English Quest!</div>
         </div>
       </div>
     </aside>
   </main>
 
-  <!-- Interactive Event Modal -->
   <div class="modal-overlay" id="eventModal">
     <div class="modal-box" id="modalBox">
       <div id="modalAnimContainer"></div>
-      <h2 class="modal-title" id="modalTitle">Tiêu Đề</h2>
-      <p class="modal-text" id="modalDesc">Mô tả cạm bẫy hoặc thử thách</p>
+      <h2 class="modal-title" id="modalTitle">Challenge</h2>
+      <p class="modal-text" id="modalDesc">Challenge description</p>
       <div id="modalInteractiveArea"></div>
     </div>
   </div>
 
-  <!-- TEACHER DASHBOARD MODAL -->
   <div class="modal-overlay" id="teacherModal">
     <div class="teacher-modal-box">
       <div class="teacher-header">
         <h2 style="font-size: 20px; font-weight: 900; color: #312e81;">
-          <i class="fa-solid fa-chalkboard-user"></i> Bảng Điều Khiển Của Giáo Viên
+          <i class="fa-solid fa-chalkboard-user"></i> Teacher Control Dashboard
         </h2>
         <button onclick="closeTeacherModal()" style="background: none; border: none; font-size: 22px; cursor: pointer; color: #64748b;">
           <i class="fa-solid fa-xmark"></i>
@@ -756,117 +745,115 @@
       </div>
 
       <div class="teacher-content">
-        <!-- 1. Cấu hình số đội chơi -->
         <div class="config-section">
-          <div class="config-title"><i class="fa-solid fa-users-gear"></i> Số Lượng Đội Chơi (1 - 4 Đội)</div>
+          <div class="config-title"><i class="fa-solid fa-users-gear"></i> Number of Teams (1 - 4 Teams)</div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Chọn số đội:</label>
-              <select class="form-select" id="cfgTeamCount" onchange="updateTeamsFromConfig()">
-                <option value="1">1 Đội (Cá nhân tự luyện)</option>
-                <option value="2" selected>2 Đội (Đối kháng A - B)</option>
-                <option value="3">3 Đội (Tam giác đấu)</option>
-                <option value="4">4 Đội (Tối đa 4 góc lớp)</option>
+              <label class="form-label">Select Teams:</label>
+              <select class="form-select" id="cfgTeamCount">
+                <option value="1">1 Team (Solo Mode)</option>
+                <option value="2" selected>2 Teams (Head-to-Head)</option>
+                <option value="3">3 Teams (Triple Battle)</option>
+                <option value="4">4 Teams (Jungle Clash)</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Điểm thưởng mỗi bước đi:</label>
+              <label class="form-label">Points per Step Moved:</label>
               <input type="number" class="form-input" id="cfgStepScore" value="5">
             </div>
           </div>
         </div>
 
-        <!-- 2. Cấu hình vị trí cạm bẫy & Ô trên bàn cờ -->
         <div class="config-section">
-          <div class="config-title"><i class="fa-solid fa-map-location-dot"></i> Thiết Lập Vị Trí Ô & Cạm Bẫy</div>
+          <div class="config-title"><i class="fa-solid fa-map-location-dot"></i> Tiles, Traps & Jungle Barriers</div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Ô Sư tử 🦁 (cách nhau dấu phẩy):</label>
+              <label class="form-label">Lion Tiles 🦁 (Roar & Retreat):</label>
               <input type="text" class="form-input" id="cfgLions" value="9, 28">
             </div>
             <div class="form-group">
-              <label class="form-label">Ô Rắn 🐍 trượt dốc:</label>
+              <label class="form-label">Snake Tiles 🐍 (Slide Down):</label>
               <input type="text" class="form-input" id="cfgSnakes" value="19->7, 31->18">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Ô Thang 🪜 leo lên:</label>
+              <label class="form-label">Ladders 🪜 (Climb Up):</label>
               <input type="text" class="form-input" id="cfgLadders" value="6->14, 25->32">
             </div>
             <div class="form-group">
-              <label class="form-label">Ô Kho báu x2 điểm 💎:</label>
+              <label class="form-label">Treasure Tiles 💎 (Double Points):</label>
               <input type="text" class="form-input" id="cfgTreasures" value="12">
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group" style="flex: 2;">
-              <label class="form-label">Ô Thử Thách Câu Hỏi Tiếng Anh ❓ (cách nhau dấu phẩy):</label>
+            <div class="form-group">
+              <label class="form-label">Jungle Barriers 🛑 (Obstacles/Traps):</label>
+              <input type="text" class="form-input" id="cfgBarriers" value="10, 20, 30">
+            </div>
+            <div class="form-group">
+              <label class="form-label">English Quiz Tiles ❓ (Questions):</label>
               <input type="text" class="form-input" id="cfgQuizzes" value="16, 22, 34">
             </div>
           </div>
         </div>
 
-        <!-- 3. Quản lý ngân hàng câu hỏi tiếng Anh -->
         <div class="config-section">
-          <div class="config-title"><i class="fa-solid fa-book-open"></i> Thêm Nhanh Câu Hỏi Tiếng Anh Mới</div>
+          <div class="config-title"><i class="fa-solid fa-book-open"></i> Add Custom English Question</div>
           <div class="form-group" style="margin-bottom: 8px;">
-            <label class="form-label">Nội dung câu hỏi (Question):</label>
-            <input type="text" class="form-input" id="newQText" placeholder="Ví dụ: What is the past form of 'GO'?">
+            <label class="form-label">Question Text:</label>
+            <input type="text" class="form-input" id="newQText" placeholder="e.g., Which animal has stripes?">
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Đáp án A:</label>
-              <input type="text" class="form-input" id="newOptA" placeholder="Goed">
+              <label class="form-label">Option A:</label>
+              <input type="text" class="form-input" id="newOptA" placeholder="Zebra">
             </div>
             <div class="form-group">
-              <label class="form-label">Đáp án B (Ví dụ đáp án đúng):</label>
-              <input type="text" class="form-input" id="newOptB" placeholder="Went">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Đáp án C:</label>
-              <input type="text" class="form-input" id="newOptC" placeholder="Gone">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Đáp án D:</label>
-              <input type="text" class="form-input" id="newOptD" placeholder="Going">
+              <label class="form-label">Option B:</label>
+              <input type="text" class="form-input" id="newOptB" placeholder="Elephant">
             </div>
           </div>
           <div class="form-row">
             <div class="form-group">
-              <label class="form-label">Chọn đáp án đúng:</label>
+              <label class="form-label">Option C:</label>
+              <input type="text" class="form-input" id="newOptC" placeholder="Lion">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Option D:</label>
+              <input type="text" class="form-input" id="newOptD" placeholder="Monkey">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Correct Option:</label>
               <select class="form-select" id="newCorrect">
-                <option value="0">A</option>
-                <option value="1" selected>B</option>
-                <option value="2">C</option>
-                <option value="3">D</option>
+                <option value="0">Option A</option>
+                <option value="1">Option B</option>
+                <option value="2">Option C</option>
+                <option value="3">Option D</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Điểm thưởng câu này:</label>
+              <label class="form-label">Reward Points:</label>
               <input type="number" class="form-input" id="newScoreVal" value="30">
             </div>
           </div>
           <button class="action-btn" style="width: 100%; margin-top: 6px;" onclick="addTeacherQuestion()">
-            <i class="fa-solid fa-plus"></i> Thêm Vào Ngân Hàng Câu Hỏi
+            <i class="fa-solid fa-plus"></i> Add to Question Bank
           </button>
         </div>
       </div>
 
       <div style="margin-top: 14px; display: flex; justify-content: flex-end; gap: 10px;">
         <button class="action-btn" style="background: #10b981;" onclick="applyTeacherConfig()">
-          <i class="fa-solid fa-check"></i> Lưu & Áp Dụng Cho Trận Đấu
+          <i class="fa-solid fa-check"></i> Apply & Restart Game
         </button>
       </div>
     </div>
   </div>
 
   <script>
-    /* =========================================================
-       AUDIO SYNTHESIZER (Pure Web Audio)
-       ========================================================= */
     const AudioContextClass = window.AudioContext || window.webkitAudioContext;
     let audioCtx = null;
     function initAudio() {
@@ -914,6 +901,21 @@
       osc.stop(audioCtx.currentTime + 0.4);
     }
 
+    function playBarrierSound() {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'square';
+      osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+      osc.frequency.setValueAtTime(90, audioCtx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.35);
+    }
+
     function speakEnglish(text) {
       if ('speechSynthesis' in window) {
         window.speechSynthesis.cancel();
@@ -924,31 +926,22 @@
       }
     }
 
-    /* =========================================================
-       3D ANIMAL SVG VECTORS (Hoạt hình 3D Animation cực nét)
-       ========================================================= */
     const ANIMAL_SVGS = {
       lion: `
         <div class="anim-3d-box">
           <svg class="lion-head-3d" viewBox="0 0 120 120">
-            <!-- Lion Mane (Bờm sư tử 3D) -->
             <circle cx="60" cy="60" r="54" fill="#f97316" filter="drop-shadow(0 6px 8px rgba(0,0,0,0.25))" />
             <circle cx="60" cy="60" r="48" fill="#ea580c" />
-            <!-- Face -->
             <ellipse cx="60" cy="62" rx="36" ry="32" fill="#fed7aa" />
-            <!-- Ears -->
             <circle cx="34" cy="34" r="12" fill="#ea580c" />
             <circle cx="34" cy="34" r="7" fill="#fed7aa" />
             <circle cx="86" cy="34" r="12" fill="#ea580c" />
             <circle cx="86" cy="34" r="7" fill="#fed7aa" />
-            <!-- Eyes -->
             <ellipse cx="46" cy="54" rx="5" ry="7" fill="#1e293b" />
             <circle cx="48" cy="52" r="2" fill="#ffffff" />
             <ellipse cx="74" cy="54" rx="5" ry="7" fill="#1e293b" />
             <circle cx="76" cy="52" r="2" fill="#ffffff" />
-            <!-- Nose & Muzzle -->
             <polygon points="60,64 54,72 66,72" fill="#7c2d12" />
-            <!-- Roaring Mouth (Há to gầm thét) -->
             <path d="M50 75 Q60 92 70 75 Z" fill="#991b1b" stroke="#450a0a" stroke-width="2" />
             <polygon points="56,75 58,79 60,75" fill="#ffffff" />
             <polygon points="60,75 62,79 64,75" fill="#ffffff" />
@@ -958,29 +951,27 @@
       snake: `
         <div class="anim-3d-box">
           <svg class="snake-3d" viewBox="0 0 120 120">
-            <!-- 3D Slithering Body -->
             <path d="M20 90 Q40 50 60 85 T100 50" fill="none" stroke="#22c55e" stroke-width="16" stroke-linecap="round" filter="drop-shadow(0 8px 10px rgba(0,0,0,0.2))" />
             <path d="M20 90 Q40 50 60 85 T100 50" fill="none" stroke="#15803d" stroke-width="6" stroke-linecap="round" stroke-dasharray="10 12" />
-            <!-- Snake Head -->
             <ellipse cx="102" cy="46" rx="14" ry="12" fill="#16a34a" />
-            <!-- Eyes -->
             <circle cx="106" cy="42" r="4" fill="#facc15" />
             <circle cx="107" cy="42" r="2" fill="#0f172a" />
-            <!-- Red Forked Tongue -->
             <path d="M116 46 L124 42 M116 46 L124 50" stroke="#ef4444" stroke-width="2" stroke-linecap="round" />
           </svg>
+        </div>
+      `,
+      barrier: `
+        <div class="anim-3d-box barrier-3d">
+          <div style="font-size: 80px; filter: drop-shadow(0 8px 12px rgba(234, 88, 12, 0.4));">🚧</div>
         </div>
       `
     };
 
-    /* =========================================================
-       GAME STATE & CONFIGURATION (Mặc định + Tùy biến Giáo Viên)
-       ========================================================= */
     const TEAM_PRESETS = [
-      { id: 0, name: "Đội Đỏ", color: "#ef4444", icon: "🔴", pos: 1, score: 0 },
-      { id: 1, name: "Đội Xanh Lam", color: "#3b82f6", icon: "🔵", pos: 1, score: 0 },
-      { id: 2, name: "Đội Vàng", color: "#eab308", icon: "🟡", pos: 1, score: 0 },
-      { id: 3, name: "Đội Xanh Lá", color: "#10b981", icon: "🟢", pos: 1, score: 0 }
+      { id: 0, name: "Red Team", color: "#ef4444", icon: "🔴", pos: 1, score: 0, skipNext: false },
+      { id: 1, name: "Blue Team", color: "#3b82f6", icon: "🔵", pos: 1, score: 0, skipNext: false },
+      { id: 2, name: "Yellow Team", color: "#eab308", icon: "🟡", pos: 1, score: 0, skipNext: false },
+      { id: 3, name: "Green Team", color: "#10b981", icon: "🟢", pos: 1, score: 0, skipNext: false }
     ];
 
     let activeTeams = [];
@@ -988,45 +979,43 @@
     let isRolling = false;
     let stepScoreReward = 5;
 
-    // Bản đồ cấu hình ô bàn cờ (Dynamic)
     let boardConfig = {
       lions: [9, 28],
       snakes: { 19: 7, 31: 18 },
       ladders: { 6: 14, 25: 32 },
       treasures: [12],
+      barriers: [10, 20, 30],
       quizzes: [16, 22, 34]
     };
 
-    // Ngân hàng câu hỏi tiếng Anh tùy chỉnh
     let questionBank = [
       {
         question: "What is the opposite of 'EXPENSIVE'?",
-        phonetic: "What is the opposite of expensive?",
         options: ["Rich", "Cheap", "High", "Heavy"],
         answer: 1,
         score: 30
       },
       {
-        question: "Which animal has a long neck?",
-        phonetic: "Which animal has a long neck?",
-        options: ["Lion", "Giraffe", "Zebra", "Monkey"],
+        question: "Which wild animal is known for its black and white stripes?",
+        options: ["Zebra", "Tiger", "Giraffe", "Panda"],
+        answer: 0,
+        score: 30
+      },
+      {
+        question: "Yesterday, we ______ a funny monkey at the safari park.",
+        options: ["see", "saw", "seen", "seeing"],
         answer: 1,
         score: 30
       },
       {
-        question: "Yesterday, my brother ______ football in the park.",
-        phonetic: "Yesterday, my brother played football in the park.",
-        options: ["play", "plays", "played", "playing"],
-        answer: 2,
+        question: "How many legs does a spider have?",
+        options: ["Six", "Eight", "Ten", "Four"],
+        answer: 1,
         score: 30
       }
     ];
 
-    /* =========================================================
-       KHỞI TẠO BÀN CỜ & TEAMS
-       ========================================================= */
     function initGame() {
-      // Mặc định ban đầu 2 đội
       activeTeams = [JSON.parse(JSON.stringify(TEAM_PRESETS[0])), JSON.parse(JSON.stringify(TEAM_PRESETS[1]))];
       currentTeamIdx = 0;
       renderTeamsLeaderboard();
@@ -1040,12 +1029,12 @@
 
       activeTeams.forEach((t, i) => {
         const item = document.createElement('div');
-        item.className = `team-item ${i === currentTeamIdx ? 'active' : ''}`;
+        item.className = `team-item ${i === currentTeamIdx ? 'active' : ''} ${t.skipNext ? 'skipped' : ''}`;
         item.id = `team-card-${t.id}`;
         item.innerHTML = `
           <div class="team-item-name" style="color: ${t.color}">${t.icon} ${t.name}</div>
           <div class="team-item-score" id="team-score-${t.id}">${t.score}</div>
-          <div class="team-item-pos">Ô ${t.pos}</div>
+          <div class="team-item-pos">Tile ${t.pos} ${t.skipNext ? '⏳' : ''}</div>
         `;
         container.appendChild(item);
       });
@@ -1054,15 +1043,14 @@
       const announcer = document.getElementById('turnAnnouncer');
       announcer.style.background = `${curr.color}20`;
       announcer.style.color = curr.color;
-      announcer.innerHTML = `Lượt đi: <b>${curr.icon} ${curr.name}</b>`;
-      document.getElementById('turnIndicatorBadge').innerText = `Lượt: ${curr.name}`;
+      announcer.innerHTML = `Current Turn: <b>${curr.icon} ${curr.name}</b> ${curr.skipNext ? '(Trapped!)' : ''}`;
+      document.getElementById('turnIndicatorBadge').innerText = `Turn: ${curr.name}`;
     }
 
     function buildBoardUI() {
       const grid = document.getElementById('boardGrid');
       grid.innerHTML = '';
 
-      // Ma trận Zích zắc 6x6
       const matrix = [];
       for (let r = 5; r >= 0; r--) {
         const row = [];
@@ -1084,24 +1072,27 @@
             tile.innerHTML = `<span class="cell-num">1</span><span class="cell-icon-box">⛺</span><span class="cell-badge">START</span>`;
           } else if (num === 36) {
             tile.classList.add('finish-cell');
-            tile.innerHTML = `<span class="cell-num">36</span><span class="cell-icon-box">🏆</span><span class="cell-badge">ĐÍCH</span>`;
+            tile.innerHTML = `<span class="cell-num">36</span><span class="cell-icon-box">🏆</span><span class="cell-badge">GOAL</span>`;
           } else if (boardConfig.lions.includes(num)) {
             tile.classList.add('lion');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🦁</span><span class="cell-badge">Sư tử</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🦁</span><span class="cell-badge">Lion Trap</span>`;
           } else if (boardConfig.snakes[num]) {
             tile.classList.add('snake');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🐍</span><span class="cell-badge">Về ${boardConfig.snakes[num]}</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🐍</span><span class="cell-badge">Slide to ${boardConfig.snakes[num]}</span>`;
           } else if (boardConfig.ladders[num]) {
             tile.classList.add('ladder');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🪜</span><span class="cell-badge">Lên ${boardConfig.ladders[num]}</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🪜</span><span class="cell-badge">Climb to ${boardConfig.ladders[num]}</span>`;
           } else if (boardConfig.treasures.includes(num)) {
             tile.classList.add('treasure');
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">💎</span><span class="cell-badge">x2 Điểm</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">💎</span><span class="cell-badge">2x Points</span>`;
+          } else if (boardConfig.barriers.includes(num)) {
+            tile.classList.add('barrier');
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🛑</span><span class="cell-badge">Barrier</span>`;
           } else if (boardConfig.quizzes.includes(num)) {
             tile.classList.add('quiz');
             tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">❓</span><span class="cell-badge">Quiz</span>`;
           } else {
-            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🌿</span><span class="cell-badge">An toàn</span>`;
+            tile.innerHTML = `<span class="cell-num">${num}</span><span class="cell-icon-box">🌿</span><span class="cell-badge">Safe Zone</span>`;
           }
 
           grid.appendChild(tile);
@@ -1140,7 +1131,6 @@
       const tileRect = tile.getBoundingClientRect();
       const boxRect = box.getBoundingClientRect();
 
-      // Căn vị trí lệch một chút nếu nhiều đội cùng đứng 1 ô
       const offsetIndex = activeTeams.findIndex(t => t.id === teamId);
       const shiftX = (offsetIndex % 2) * 8 - 4;
       const shiftY = Math.floor(offsetIndex / 2) * 8 - 4;
@@ -1160,11 +1150,22 @@
       feed.prepend(item);
     }
 
-    /* =========================================================
-       XÚC XẮC & LƯỢT ĐI NHIỀU ĐỘI
-       ========================================================= */
     function handleRoll() {
       if (isRolling) return;
+
+      const team = activeTeams[currentTeamIdx];
+
+      // Handle Quicksand / Barrier Skip Turn
+      if (team.skipNext) {
+        team.skipNext = false;
+        showEventModal('⏳ MISSED TURN!', `<b>${team.name}</b> is breaking free from the Quicksand barrier! You must skip this turn!`, '<div style="font-size: 70px;">🕳️</div>', () => {
+          addLog(`⏳ <b>${team.name}</b> skipped their turn to escape the barrier!`);
+          finishTurn();
+        });
+        speakEnglish(`${team.name} misses this turn to escape the barrier.`);
+        return;
+      }
+
       isRolling = true;
       document.getElementById('rollBtn').disabled = true;
 
@@ -1182,9 +1183,9 @@
 
       for (let i = 0; i < 5; i++) setTimeout(() => playTone(500, 'sine', 0.08), i * 110);
 
-      const team = activeTeams[currentTeamIdx];
       setTimeout(() => {
-        addLog(`🎲 <b>${team.name}</b> lắc được <b>${rollVal} nút</b>!`);
+        addLog(`🎲 <b>${team.name}</b> rolled a <b>${rollVal}</b>!`);
+        speakEnglish(`${team.name} rolled a ${rollVal}!`);
         moveTeamStepByStep(team, rollVal);
       }, 1150);
     }
@@ -1210,76 +1211,116 @@
       resolveTileAction(team);
     }
 
-    /* =========================================================
-       XỬ LÝ CẠM BẪY & Ô ĐẶC BIỆT
-       ========================================================= */
     function resolveTileAction(team) {
       const pos = team.pos;
 
-      // 1. Ô Sư Tử (3D Animated SVG + Rung bàn cờ)
+      // 1. Lion Trap
       if (boardConfig.lions.includes(pos)) {
         playLionSound();
-        showEventModal('🦁 SƯ TỬ 3D GẦM VANG!', `<b>${team.name}</b> chạm trán sư tử hung dữ! Bị dọa sợ lùi lại 3 bước!`, ANIMAL_SVGS.lion, () => {
+        showEventModal('🦁 LION ATTACK!', `A fierce lion roars loudly! <b>${team.name}</b> runs back 3 steps!`, ANIMAL_SVGS.lion, () => {
           document.getElementById('boardBox').classList.add('screen-shake');
           setTimeout(() => document.getElementById('boardBox').classList.remove('screen-shake'), 450);
 
           team.pos = Math.max(1, team.pos - 3);
           syncTokenPosition(team.id, team.pos);
-          addLog(`😱 ${team.name} dẫm ô sư tử, lùi về ô ${team.pos}!`);
+          renderTeamsLeaderboard();
+          addLog(`😱 <b>${team.name}</b> stepped on a lion! Retreated to Tile ${team.pos}!`);
           finishTurn();
         });
+        speakEnglish("Look out! A lion roars! Step back three tiles!");
       }
-      // 2. Ô Rắn Trượt (3D Animated Snake)
+      // 2. Snake Slide
       else if (boardConfig.snakes[pos]) {
         playSnakeSound();
         const target = boardConfig.snakes[pos];
-        showEventModal('🐍 RẮN KHỔNG LỒ 3D!', `Bị trượt theo đuôi trăn khổng lồ rơi tụt xuống ô ${target}!`, ANIMAL_SVGS.snake, () => {
+        showEventModal('🐍 GIANT PYTHON!', `Oh no! Slid down the giant snake to Tile ${target}!`, ANIMAL_SVGS.snake, () => {
           team.pos = target;
           syncTokenPosition(team.id, team.pos);
-          addLog(`😢 ${team.name} bị trượt tụt dốc về ô ${target}!`);
+          renderTeamsLeaderboard();
+          addLog(`😢 <b>${team.name}</b> slid down to Tile ${target}!`);
           finishTurn();
         });
+        speakEnglish(`Oh no! Slipping down the snake to tile ${target}!`);
       }
-      // 3. Ô Thang Leo
+      // 3. Wooden Ladder
       else if (boardConfig.ladders[pos]) {
         playLadderSound();
         const target = boardConfig.ladders[pos];
-        showEventModal('🪜 THANG GỖ THẦN KỲ!', `Tuyệt vời! Leo thang gỗ tiến thẳng lên ô ${target}!`, '<div style="font-size: 70px;">🪜</div>', () => {
+        showEventModal('🪜 MAGIC LADDER!', `Awesome climb! <b>${team.name}</b> advances directly to Tile ${target}!`, '<div style="font-size: 70px;">🪜</div>', () => {
           team.pos = target;
           team.score += 20;
           syncTokenPosition(team.id, team.pos);
-          addLog(`🚀 ${team.name} leo thang lên ô ${target} (+20đ)!`);
+          renderTeamsLeaderboard();
+          addLog(`🚀 <b>${team.name}</b> climbed the ladder to Tile ${target} (+20 pts)!`);
           finishTurn();
         });
+        speakEnglish(`Super! Climb the magic ladder to tile ${target}!`);
       }
-      // 4. Ô Rương x2 Điểm
+      // 4. Treasure Double Points
       else if (boardConfig.treasures.includes(pos)) {
         playLadderSound();
         team.score *= 2;
-        showEventModal('💎 RƯƠNG KHO BÁU x2!', `Chúc mừng ${team.name} được nhân đôi số điểm hiện có!`, '<div style="font-size: 70px;">💎</div>', () => {
-          addLog(`✨ ${team.name} x2 điểm số thành ${team.score}!`);
+        showEventModal('💎 TREASURE CHEST!', `Incredible luck! <b>${team.name}</b> doubled their total score!`, '<div style="font-size: 70px;">💎</div>', () => {
+          renderTeamsLeaderboard();
+          addLog(`✨ <b>${team.name}</b> doubled their score to ${team.score}!`);
           finishTurn();
         });
+        speakEnglish("Incredible treasure! Points doubled!");
       }
-      // 5. Ô Câu Hỏi Tiếng Anh
+      // 5. Jungle Barriers & Obstacles (Quicksand, Fallen Trees, Rockslides)
+      else if (boardConfig.barriers.includes(pos)) {
+        playBarrierSound();
+        handleBarrierEvent(team, pos);
+      }
+      // 6. English Quiz Challenge
       else if (boardConfig.quizzes.includes(pos)) {
         openEnglishQuiz(team);
       }
-      // 6. Về Đích 36
+      // 7. Victory Goal
       else if (pos === 36) {
-        confetti({ particleCount: 150, spread: 90, origin: { y: 0.6 } });
-        showEventModal('🏆 CHIẾN THẮNG VINH QUANG!', `Chúc mừng <b>${team.name}</b> đã chinh phục thành công Safari với điểm số kỷ lục: ${team.score}!`, '<div style="font-size: 80px;">👑</div>', () => {
+        confetti({ particleCount: 160, spread: 90, origin: { y: 0.6 } });
+        showEventModal('🏆 VICTORY!', `Congratulations <b>${team.name}</b>! You conquered the Safari Jungle with ${team.score} points!`, '<div style="font-size: 80px;">👑</div>', () => {
           finishTurn();
         });
+        speakEnglish(`Congratulations ${team.name}! You won the game!`);
       }
       else {
         finishTurn();
       }
     }
 
-    /* =========================================================
-       POPUP THỬ THÁCH TIẾNG ANH (Nghe phát âm chuẩn)
-       ========================================================= */
+    function handleBarrierEvent(team, pos) {
+      if (pos === 10) {
+        // Quicksand Trap: Lose next turn
+        team.skipNext = true;
+        renderTeamsLeaderboard();
+        showEventModal('🕳️ QUICKSAND BARRIER!', `<b>${team.name}</b> got stuck in deep quicksand! You must <b>SKIP YOUR NEXT TURN</b> to pull yourself out!`, ANIMAL_SVGS.barrier, () => {
+          addLog(`🛑 <b>${team.name}</b> got stuck in Quicksand (Skip next turn)!`);
+          finishTurn();
+        });
+        speakEnglish("Quicksand barrier! You miss your next turn!");
+      } else if (pos === 20) {
+        // Fallen Tree: Knocked back 2 steps
+        showEventModal('🪵 FALLEN TREE BARRIER!', `A massive ancient tree blocks the pathway! <b>${team.name}</b> is forced back 2 steps!`, ANIMAL_SVGS.barrier, () => {
+          team.pos = Math.max(1, team.pos - 2);
+          syncTokenPosition(team.id, team.pos);
+          renderTeamsLeaderboard();
+          addLog(`🪵 Fallen Tree blocked <b>${team.name}</b> (Moved back to Tile ${team.pos})!`);
+          finishTurn();
+        });
+        speakEnglish("A huge tree blocks the path! Step back two tiles!");
+      } else {
+        // Rockslide Barrier: Lose 15 points
+        team.score = Math.max(0, team.score - 15);
+        showEventModal('🪨 ROCKSLIDE BARRIER!', `Rolling boulders! <b>${team.name}</b> dodges safely but drops equipment (-15 points)!`, ANIMAL_SVGS.barrier, () => {
+          renderTeamsLeaderboard();
+          addLog(`🪨 Rockslide penalty for <b>${team.name}</b> (-15 pts)!`);
+          finishTurn();
+        });
+        speakEnglish("Rockslide! Minus fifteen points!");
+      }
+    }
+
     function openEnglishQuiz(team) {
       if (questionBank.length === 0) {
         finishTurn();
@@ -1293,19 +1334,19 @@
       const body = document.getElementById('modalInteractiveArea');
 
       animBox.innerHTML = '<div style="font-size: 65px;">📚</div>';
-      title.innerText = `THỬ THÁCH: ${team.name}`;
+      title.innerText = `CHALLENGE: ${team.name}`;
       desc.innerText = q.question;
 
       let html = `
-        <button class="tts-btn" onclick="speakEnglish('${q.phonetic.replace(/'/g, "\\'")}')">
-          <i class="fa-solid fa-volume-high"></i> Nghe đọc phát âm
+        <button class="tts-btn" onclick="speakEnglish('${q.question.replace(/'/g, "\\'")}')">
+          <i class="fa-solid fa-volume-high"></i> Listen to Question
         </button>
         <div class="quiz-options-list">
       `;
 
       q.options.forEach((opt, idx) => {
         html += `
-          <button class="quiz-opt-btn" onclick="checkAnswer(${idx}, ${q.answer}, ${q.score}, team)">
+          <button class="quiz-opt-btn" onclick="checkAnswer(${idx}, ${q.answer}, ${q.score})">
             <b>${String.fromCharCode(65 + idx)}.</b> ${opt}
           </button>
         `;
@@ -1314,27 +1355,32 @@
 
       body.innerHTML = html;
       modal.style.display = 'flex';
-      speakEnglish(q.phonetic);
+      speakEnglish(q.question);
     }
 
-    function checkAnswer(selected, correct, scoreVal, team) {
+    function checkAnswer(selected, correct, scoreVal) {
       document.getElementById('eventModal').style.display = 'none';
+      const team = activeTeams[currentTeamIdx];
 
       if (selected === correct) {
         playLadderSound();
         team.score += scoreVal;
-        showEventModal('🎉 CHÍNH XÁC!', `${team.name} trả lời rất xuất sắc! Được thưởng +${scoreVal} điểm!`, '<div style="font-size: 70px;">🌟</div>', () => {
-          addLog(`✅ ${team.name} trả lời đúng quiz (+${scoreVal}đ)!`);
+        renderTeamsLeaderboard();
+        showEventModal('🎉 EXCELLENT!', `Great pronunciation & grammar! <b>${team.name}</b> earned +${scoreVal} points!`, '<div style="font-size: 70px;">🌟</div>', () => {
+          addLog(`✅ <b>${team.name}</b> answered correctly (+${scoreVal} pts)!`);
           finishTurn();
         });
+        speakEnglish(`Correct answer! Plus ${scoreVal} points!`);
       } else {
         playSnakeSound();
         team.pos = Math.max(1, team.pos - 2);
         syncTokenPosition(team.id, team.pos);
-        showEventModal('❌ TIẾC QUÁ, CHƯA ĐÚNG!', `${team.name} bị lùi lại 2 bước để ôn bài nhé!`, '<div style="font-size: 70px;">💡</div>', () => {
-          addLog(`❌ ${team.name} trả lời sai, lùi về ô ${team.pos}!`);
+        renderTeamsLeaderboard();
+        showEventModal('❌ NOT QUITE!', `Incorrect answer! <b>${team.name}</b> moves back 2 steps to practice again!`, '<div style="font-size: 70px;">💡</div>', () => {
+          addLog(`❌ <b>${team.name}</b> missed the question (Back to Tile ${team.pos})!`);
           finishTurn();
         });
+        speakEnglish("Nice try! Step back two tiles to review!");
       }
     }
 
@@ -1345,7 +1391,7 @@
       document.getElementById('modalAnimContainer').innerHTML = animContent;
 
       const body = document.getElementById('modalInteractiveArea');
-      body.innerHTML = `<button class="action-btn" id="modalConfirmBtn">TIẾP TỤC</button>`;
+      body.innerHTML = `<button class="action-btn" id="modalConfirmBtn">CONTINUE</button>`;
 
       modal.style.display = 'flex';
       document.getElementById('modalConfirmBtn').onclick = () => {
@@ -1361,9 +1407,6 @@
       document.getElementById('rollBtn').disabled = false;
     }
 
-    /* =========================================================
-       TEACHER MODAL LOGIC & SETTINGS
-       ========================================================= */
     function openTeacherModal() {
       document.getElementById('teacherModal').style.display = 'flex';
     }
@@ -1382,19 +1425,18 @@
       const score = parseInt(document.getElementById('newScoreVal').value) || 30;
 
       if (!q || !a || !b || !c || !d) {
-        alert('Giáo viên vui lòng nhập đầy đủ câu hỏi và 4 đáp án A, B, C, D nhé!');
+        alert('Please fill out the question and all 4 options!');
         return;
       }
 
       questionBank.push({
         question: q,
-        phonetic: q,
         options: [a, b, c, d],
         answer: correct,
         score: score
       });
 
-      alert(`Đã thêm thành công! Tổng ngân hàng hiện có: ${questionBank.length} câu hỏi.`);
+      alert(`Question successfully added! Question bank now has ${questionBank.length} questions.`);
       document.getElementById('newQText').value = '';
       document.getElementById('newOptA').value = '';
       document.getElementById('newOptB').value = '';
@@ -1403,7 +1445,6 @@
     }
 
     function applyTeacherConfig() {
-      // 1. Số đội chơi
       const teamCount = parseInt(document.getElementById('cfgTeamCount').value);
       activeTeams = [];
       for (let i = 0; i < teamCount; i++) {
@@ -1411,16 +1452,14 @@
       }
       currentTeamIdx = 0;
 
-      // 2. Điểm thưởng mỗi bước
       stepScoreReward = parseInt(document.getElementById('cfgStepScore').value) || 5;
 
-      // 3. Phân bổ ô
       const parseList = (str) => str.split(',').map(s => parseInt(s.trim())).filter(n => !isNaN(n));
       boardConfig.lions = parseList(document.getElementById('cfgLions').value);
       boardConfig.treasures = parseList(document.getElementById('cfgTreasures').value);
+      boardConfig.barriers = parseList(document.getElementById('cfgBarriers').value);
       boardConfig.quizzes = parseList(document.getElementById('cfgQuizzes').value);
 
-      // Phân bổ Thang (dạng 6->14)
       boardConfig.ladders = {};
       document.getElementById('cfgLadders').value.split(',').forEach(item => {
         const parts = item.split('->').map(s => parseInt(s.trim()));
@@ -1429,7 +1468,6 @@
         }
       });
 
-      // Phân bổ Rắn (dạng 19->7)
       boardConfig.snakes = {};
       document.getElementById('cfgSnakes').value.split(',').forEach(item => {
         const parts = item.split('->').map(s => parseInt(s.trim()));
@@ -1438,12 +1476,11 @@
         }
       });
 
-      // Xây lại bàn cờ và reset token
       buildBoardUI();
       createPlayerTokens();
       renderTeamsLeaderboard();
       closeTeacherModal();
-      addLog('⚙️ <b>Giáo viên đã cập nhật cấu hình bàn cờ và các đội chơi!</b>');
+      addLog('⚙️ <b>Teacher applied new configurations to the Safari Quest!</b>');
     }
 
     window.addEventListener('load', () => {
